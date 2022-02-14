@@ -1,37 +1,47 @@
 {
-  "name": "code-school-isolated",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "jacko-ui-components",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
   "license": "MIT",
-  "homepage": "/new-skeleton-webpack",
   "scripts": {
-    "build": "webpack --mode=production --config config/webpack.prod.js",
-    "start": "webpack serve --config config/webpack.dev.js"
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
+    "build-lib": "rollup -c"
   },
   "dependencies": {
-    "core-js": "^3.20.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "core-js": "^3.20.0"
   },
   "devDependencies": {
     "@babel/core": "^7.16.5",
     "@babel/preset-env": "^7.16.5",
     "@babel/preset-react": "^7.16.5",
-    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
+    "@rollup/plugin-node-resolve": "^13.1.3",
+    "@storybook/addon-actions": "^6.4.19",
+    "@storybook/addon-essentials": "^6.4.19",
+    "@storybook/addon-interactions": "^6.4.19",
+    "@storybook/addon-links": "^6.4.19",
+    "@storybook/react": "^6.4.19",
+    "@storybook/testing-library": "^0.0.9",
     "babel-loader": "^8.2.3",
-    "clean-webpack-plugin": "^4.0.0",
-    "css-loader": "^6.5.1",
-    "html-webpack-plugin": "^5.5.0",
-    "mini-css-extract-plugin": "^2.4.5",
-    "react-refresh": "^0.11.0",
-    "sass": "^1.45.0",
-    "sass-loader": "^12.4.0",
-    "style-loader": "^3.3.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "rollup": "^2.67.2",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-terser": "^7.0.2",
     "webpack": "^5.65.0",
     "webpack-cli": "^4.9.1",
-    "webpack-dev-server": "^4.6.0",
-    "webpack-merge": "^5.8.0"
+    "webpack-dev-server": "^4.6.0"
   },
-  "browserslist": ["> 0.25%", "not dead", "not ie 11"]
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "browserslist": [
+    "> 0.25%",
+    "not dead",
+    "not ie 11"
+  ]
 }
-
