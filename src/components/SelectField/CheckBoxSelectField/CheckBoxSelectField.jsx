@@ -8,6 +8,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import {Switch} from "@mui/material";
 import {multiLevelDummy} from "../constants";
+import {CustomMenuItem} from "./CheckBoxSelectFieldStyles";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -19,19 +20,6 @@ const MenuProps = {
         },
     },
 };
-
-const names = [
-    'Oliver Hansen',
-    'Van Henry',
-    'April Tucker',
-    'Ralph Hubbard',
-    'Omar Alexander',
-    'Carlos Abbott',
-    'Miriam Wagner',
-    'Bradley Wilkerson',
-    'Virginia Andrews',
-    'Kelly Snyder',
-];
 
 export default function MultipleSelectCheckmarks() {
     const [personName, setPersonName] = useState([]);
@@ -47,14 +35,6 @@ export default function MultipleSelectCheckmarks() {
     };
 
     const buildOptions = options => {
-        // This was the first approach with no multi-ident/level
-        // return options.map((name) => (
-        //     <MenuItem key={name} value={name}>
-        //         <ListItemText primary={name} />
-        //         <Checkbox checked={personName.indexOf(name) > -1} />
-        //         <Switch checked={personName.indexOf(name) > -1} />
-        //     </MenuItem>
-        // ))
         console.log('%cFile: CheckBoxSelectField.jsx, Function: buildOptions, Line 57 options: ', 'color: pink', options);
         let aux = [], level = 0;
         options.forEach(item => {
@@ -80,12 +60,19 @@ export default function MultipleSelectCheckmarks() {
                 })
             }
         })
+        console.log('%cFile: CheckBoxSelectField.jsx, Function: buildOptions, Line 84 aux: ', 'color: pink', aux);
+        console.log('%cFile: CheckBoxSelectField.jsx, Function: buildOptions, Line 85 personName: ', 'color: pink', personName);
         return aux.map((item) => (
-            <MenuItem key={item.id} value={item.name} style={{paddingLeft: `${item.level * 30}px`}}>
-                 <ListItemText primary={item.name} />
-                 {/*<Checkbox checked={personName.indexOf(name) > -1} />*/}
-                 {/*<Switch checked={personName.indexOf(name) > -1} />*/}
-             </MenuItem>
+            // <MenuItem key={item.id} value={item.name} style={{paddingLeft: `${item.level * 30}px`}}>
+            //      <ListItemText primary={item.name} />
+            //      {/*<Checkbox checked={personName.indexOf(name) > -1} />*/}
+            //      {/*<Switch checked={personName.indexOf(name) > -1} />*/}
+            //  </MenuItem>
+            <CustomMenuItem key={item.id} value={item.name} level={item.level}>
+                <ListItemText primary={item.name} />
+                <Checkbox checked={personName.indexOf(item.name) > -1} />
+                <Switch checked={personName.indexOf(item.name) > -1} />
+            </CustomMenuItem>
             )
         )
     }
@@ -93,7 +80,7 @@ export default function MultipleSelectCheckmarks() {
     return (
         <div>
             <FormControl sx={{ m: 1, width: 300 }}>
-                <InputLabel id="demo-multiple-checkbox-label">Tag</InputLabel>
+                <InputLabel id="demo-multiple-checkbox-label">Multi-level-selection</InputLabel>
                 <Select
                     labelId="demo-multiple-checkbox-label"
                     id="demo-multiple-checkbox"
@@ -104,15 +91,7 @@ export default function MultipleSelectCheckmarks() {
                     renderValue={(selected) => selected.join(', ')}
                     MenuProps={MenuProps}
                 >
-                    {/*{buildOptions(names)}*/}
                     {buildOptions(multiLevelDummy)}
-                    {/*{names.map((name) => (*/}
-                    {/*    <MenuItem key={name} value={name}>*/}
-                    {/*        <ListItemText primary={name} />*/}
-                    {/*        <Checkbox checked={personName.indexOf(name) > -1} />*/}
-                    {/*        <Switch checked={personName.indexOf(name) > -1} />*/}
-                    {/*    </MenuItem>*/}
-                    {/*))}*/}
                 </Select>
             </FormControl>
         </div>
