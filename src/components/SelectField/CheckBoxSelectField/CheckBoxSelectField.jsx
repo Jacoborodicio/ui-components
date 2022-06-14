@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -8,7 +8,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import {Switch} from "@mui/material";
 import {multiLevelDummy} from "../constants";
-import {CustomMenuItem} from "./CheckBoxSelectFieldStyles";
+import {CollapseIcon, CustomMenuItem} from "./CheckBoxSelectFieldStyles";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -23,7 +23,8 @@ const MenuProps = {
 
 export default function MultipleSelectCheckmarks() {
     const [personName, setPersonName] = useState([]);
-
+    const [builtOptions, setBuiltOptions] = useState([]);
+    useEffect(() => buildOptions(multiLevelDummy), []);
     const handleChange = (event) => {
         const {
             target: { value },
@@ -35,48 +36,64 @@ export default function MultipleSelectCheckmarks() {
     };
 
     const buildOptions = options => {
-        console.log('%cFile: CheckBoxSelectField.jsx, Function: buildOptions, Line 57 options: ', 'color: pink', options);
+        // TODO: Remove doom logic by replacing it with recursive version
         let aux = [], level = 0;
         options.forEach(item => {
             level = 0;
             // Creating the level to be able to keep hierarchy
-            aux = [...aux, {id: item.id, name: item.name, img: item.img, level}];
             if (item.hasOwnProperty('children') && item.children.length > 0) {
+                aux = [...aux, {id: item.id, name: item.name, img: item.img, level, collapsed: false, visible: true}];
                 item.children.forEach(subItem => {
                 level = 1;
-                    aux = [...aux, {id: subItem.id, name: subItem.name, img: subItem.img, level}];
                     if (subItem.hasOwnProperty('children') && subItem.children.length > 0) {
+                        aux = [...aux, {id: subItem.id, name: subItem.name, img: subItem.img, level, collapsed: false, visible: true}];
                         subItem.children.forEach(subItemChild => {
                         level = 2;
-                            aux = [...aux, {id: subItemChild.id, name: subItemChild.name, img: subItemChild.img, level}];
                             if (subItemChild.hasOwnProperty('children') && subItemChild.children.length > 0) {
+                                aux = [...aux, {id: subItemChild.id, name: subItemChild.name, img: subItemChild.img, level, collapsed: false, visible: true}];
                                 subItemChild.children.forEach(whatever => {
                                 level = 3;
-                                    aux = [...aux, {id: whatever.id, name: whatever.name, img: whatever.img, level}];
+                                    aux = [...aux, {id: whatever.id, name: whatever.name, img: whatever.img, level, visible: true}];
                                 })
-                            }
+                            } else aux = [...aux, {id: subItemChild.id, name: subItemChild.name, img: subItemChild.img, level, visible: true}];
                         })
-                    }
+                    } else aux = [...aux, {id: subItem.id, name: subItem.name, img: subItem.img, level, visible: true}];
                 })
-            }
+            } else aux = [...aux, {id: item.id, name: item.name, img: item.img, level, visible: true}];
         })
-        console.log('%cFile: CheckBoxSelectField.jsx, Function: buildOptions, Line 84 aux: ', 'color: pink', aux);
-        console.log('%cFile: CheckBoxSelectField.jsx, Function: buildOptions, Line 85 personName: ', 'color: pink', personName);
-        return aux.map((item) => (
-            // <MenuItem key={item.id} value={item.name} style={{paddingLeft: `${item.level * 30}px`}}>
-            //      <ListItemText primary={item.name} />
-            //      {/*<Checkbox checked={personName.indexOf(name) > -1} />*/}
-            //      {/*<Switch checked={personName.indexOf(name) > -1} />*/}
-            //  </MenuItem>
-            <CustomMenuItem key={item.id} value={item.name} level={item.level}>
-                <ListItemText primary={item.name} />
-                <Checkbox checked={personName.indexOf(item.name) > -1} />
-                <Switch checked={personName.indexOf(item.name) > -1} />
-            </CustomMenuItem>
-            )
-        )
+
+        setBuiltOptions(aux);
     }
 
+    const renderOptions = options => {
+        return options.map((item) => {
+           return item.visible ? (<CustomMenuItem key={item.id} value={item.name} level={item.level}>
+                <ListItemText primary={item.name}/>
+                {item.hasOwnProperty('collapsed') &&
+                    <CollapseIcon collapsed={item.collapsed} onClick={(event) => handleCollapse(item.id, event)}/>}
+                <Checkbox checked={personName.indexOf(item.name) > -1}/>
+                <Switch checked={personName.indexOf(item.name) > -1}/>
+            </CustomMenuItem>) : undefined;
+        }
+        );
+    }
+
+    const handleCollapse = (id, event) => {
+        console.log('%cFile: CheckBoxSelectField.jsx, Function: handleCollapse, Line 82 event.target: ', 'color: pink', event.target);
+        // TODO: Improve logic, just do it like that for now to play with styling
+        // The current idea before the refactoring is just to loop from the current position changing the visible value
+        // until we found an item with the same or lower level as the current item (this means that is not inside the current group)
+        let auxBuiltOptions = [...builtOptions.map(item => item)]; // TODO: Check if the map is needed -> ref: shallow copy
+        let currentIndex = auxBuiltOptions.findIndex(item => item.id === id);
+        if (!currentIndex && currentIndex !== 0) return;
+        let currentLevel = auxBuiltOptions[currentIndex].level;
+        auxBuiltOptions[currentIndex].collapsed = !auxBuiltOptions[currentIndex].collapsed;
+        for (let i = currentIndex + 1; i <= auxBuiltOptions.length - 1; i++) {
+            if (auxBuiltOptions[i].level > auxBuiltOptions[currentIndex].level) {
+                auxBuiltOptions[i].visible = !auxBuiltOptions[currentIndex].collapsed;
+            }
+        }
+    }
     return (
         <div>
             <FormControl sx={{ m: 1, width: 300 }}>
@@ -91,7 +108,7 @@ export default function MultipleSelectCheckmarks() {
                     renderValue={(selected) => selected.join(', ')}
                     MenuProps={MenuProps}
                 >
-                    {buildOptions(multiLevelDummy)}
+                    {renderOptions(builtOptions)}
                 </Select>
             </FormControl>
         </div>
