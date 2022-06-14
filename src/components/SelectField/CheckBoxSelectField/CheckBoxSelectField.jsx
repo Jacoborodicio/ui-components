@@ -7,7 +7,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import {Switch} from "@mui/material";
-import {multiLevelDummy} from "../constants";
+import {multiLevelDummy} from "../../constants";
 import {CollapseIcon, CustomMenuItem} from "./CheckBoxSelectFieldStyles";
 
 const ITEM_HEIGHT = 48;

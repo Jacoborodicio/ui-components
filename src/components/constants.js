@@ -41,3 +41,42 @@ export const multiLevelDummy = [
         img: 'S'
     }
 ]
+
+export const workflowStepsDummy = [
+    {
+        id: 1,
+        name: 'Start',
+        logo: '',
+        disabled: false,
+    },
+    {
+        id: 2,
+        name: 'First Step',
+        logo: '',
+        disabled: false,
+    },
+    {
+        id: 3,
+        name: 'Second Step',
+        logo: '',
+        disabled: false,
+    },
+    {
+        id: 4,
+        name: 'Agreement',
+        logo: '',
+        disabled: false,
+    },
+    {
+        id: 5,
+        name: 'Sign',
+        logo: '',
+        disabled: false,
+    },{
+        id: 6,
+        name: 'Closing',
+        logo: '',
+        disabled: true,
+    },
+
+]
