@@ -35,58 +35,58 @@ export default function MultipleSelectCheckmarks() {
         );
     };
 
-    const recursiveBuildOptions = (input, aux, size, index = 0, childrenIndex = 0, level = 0) => {
-        console.log('%cFile: CheckBoxSelectField.jsx, Function: recursiveBuildOptions, Line 40 index, size: ', 'color: pink', index, size);
-        console.log('%cFile: CheckBoxSelectField.jsx, Function: recursiveBuildOptions, Line 40 input: ', 'color: pink', input);
-        if (index === size) {
-            console.log('%c equals!!!', 'color: #ecb1f2; font-style:italic');
-            return aux;
-        }
-        let tempItem = input[index];
-        console.log('%cFile: CheckBoxSelectField.jsx, Function: recursiveBuildOptions, Line 42 tempItem: ', 'color: pink', tempItem);
-        let tempObject = {id: tempItem.id, name: tempItem.name, img: tempItem.img, level, collapsed: false, visible: true}
-        aux = [...aux, {...tempObject}];
-        console.log('%cFile: CheckBoxSelectField.jsx, Function: recursiveBuildOptions, Line 45 aux: ', 'color: pink', aux);
-        if (tempItem.hasOwnProperty('children')) {
-            console.log('%c TIENE HIJOS', 'color: #ecb1f2; font-style:italic');
-            recursiveBuildOptions(input[index].children, aux, size + input[index].children.length, index, level + 1)
-        } else {
-            recursiveBuildOptions(input.slice(1), aux, size, index + 1, 0, level === 0 ? level : level - 1);
-        }
-    }
+    // const recursiveBuildOptions = (input, aux, size, index = 0, childrenIndex = 0, level = 0) => {
+    //     console.log('%cFile: CheckBoxSelectField.jsx, Function: recursiveBuildOptions, Line 40 index, size: ', 'color: pink', index, size);
+    //     console.log('%cFile: CheckBoxSelectField.jsx, Function: recursiveBuildOptions, Line 40 input: ', 'color: pink', input);
+    //     if (index === size) {
+    //         console.log('%c equals!!!', 'color: #ecb1f2; font-style:italic');
+    //         return aux;
+    //     }
+    //     let tempItem = input[index];
+    //     console.log('%cFile: CheckBoxSelectField.jsx, Function: recursiveBuildOptions, Line 42 tempItem: ', 'color: pink', tempItem);
+    //     let tempObject = {id: tempItem.id, name: tempItem.name, img: tempItem.img, level, collapsed: false, visible: true}
+    //     aux = [...aux, {...tempObject}];
+    //     console.log('%cFile: CheckBoxSelectField.jsx, Function: recursiveBuildOptions, Line 45 aux: ', 'color: pink', aux);
+    //     if (tempItem.hasOwnProperty('children')) {
+    //         recursiveBuildOptions(input[index].children, aux, size + input[index].children.length, index, level + 1)
+    //     } else {
+    //
+    //         recursiveBuildOptions(input.slice(1), aux, size, index + 1, 0, level === 0 ? level : level - 1);
+    //     }
+    // }
 
     const buildOptions = options => {
         // TODO: Remove doom logic by replacing it with recursive version
-        // let aux = [];
-        let fromRecursive = recursiveBuildOptions(options,[], options.length - 1);
-        console.log('%cFile: CheckBoxSelectField.jsx, Function: buildOptions, Line 58 fromRecursive: ', 'color: pink', fromRecursive);
+        let aux = [];
+        // let fromRecursive = recursiveBuildOptions(options,[], options.length - 1);
         // input:
-        // options.forEach(item => {
-        //     let level = 0;
-        //     // Creating the level to be able to keep hierarchy
-        //     if (item.hasOwnProperty('children') && item.children.length > 0) {
-        //         aux = [...aux, {id: item.id, name: item.name, img: item.img, level, collapsed: false, visible: true}];
-        //         item.children.forEach(subItem => {
-        //         level = 1;
-        //             if (subItem.hasOwnProperty('children') && subItem.children.length > 0) {
-        //                 aux = [...aux, {id: subItem.id, name: subItem.name, img: subItem.img, level, collapsed: false, visible: true}];
-        //                 subItem.children.forEach(subItemChild => {
-        //                 level = 2;
-        //                     if (subItemChild.hasOwnProperty('children') && subItemChild.children.length > 0) {
-        //                         aux = [...aux, {id: subItemChild.id, name: subItemChild.name, img: subItemChild.img, level, collapsed: false, visible: true}];
-        //                         subItemChild.children.forEach(whatever => {
-        //                         level = 3;
-        //                             aux = [...aux, {id: whatever.id, name: whatever.name, img: whatever.img, level, visible: true}];
-        //                         })
-        //                     } else aux = [...aux, {id: subItemChild.id, name: subItemChild.name, img: subItemChild.img, level, visible: true}];
-        //                 })
-        //             } else aux = [...aux, {id: subItem.id, name: subItem.name, img: subItem.img, level, visible: true}];
-        //         })
-        //     } else aux = [...aux, {id: item.id, name: item.name, img: item.img, level, visible: true}];
-        // })
+        options.forEach(item => {
+            let level = 0;
+            // Creating the level to be able to keep hierarchy
+            if (item.hasOwnProperty('children') && item.children.length > 0) {
+                aux = [...aux, {id: item.id, name: item.name, img: item.img, level, collapsed: false, visible: true}];
+                item.children.forEach(subItem => {
+                level = 1;
+                    if (subItem.hasOwnProperty('children') && subItem.children.length > 0) {
+                        aux = [...aux, {id: subItem.id, name: subItem.name, img: subItem.img, level, collapsed: false, visible: true}];
+                        subItem.children.forEach(subItemChild => {
+                        level = 2;
+                            if (subItemChild.hasOwnProperty('children') && subItemChild.children.length > 0) {
+                                aux = [...aux, {id: subItemChild.id, name: subItemChild.name, img: subItemChild.img, level, collapsed: false, visible: true}];
+                                subItemChild.children.forEach(whatever => {
+                                level = 3;
+                                    aux = [...aux, {id: whatever.id, name: whatever.name, img: whatever.img, level, visible: true}];
+                                })
+                            } else aux = [...aux, {id: subItemChild.id, name: subItemChild.name, img: subItemChild.img, level, visible: true}];
+                        })
+                    } else aux = [...aux, {id: subItem.id, name: subItem.name, img: subItem.img, level, visible: true}];
+                })
+            } else aux = [...aux, {id: item.id, name: item.name, img: item.img, level, visible: true}];
+        })
 
-        // setBuiltOptions(aux);
-        setBuiltOptions(fromRecursive)
+        console.log('%cFile: CheckBoxSelectField.jsx, Function: buildOptions, Line 87 aux: ', 'color: pink', aux);
+        setBuiltOptions(aux);
+        // setBuiltOptions(fromRecursive)
     }
 
     const renderOptions = options => {
