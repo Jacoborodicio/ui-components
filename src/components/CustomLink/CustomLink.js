@@ -3,17 +3,14 @@ import { PropTypes } from "prop-types";
 import * as S from "./CustomLink.styled";
 
 const CustomLink = ({ to, children, action }) => {
-  console.log(
-    "%c 🔰 to, children, action 🔰:",
-    "color:orange",
-    to,
-    children,
-    action
-  );
   const getActionIcon = () => {
     switch (action?.toLowerCase()) {
       case "save":
-        return <p style={{ background: "blue" }}>save</p>;
+        return (
+          <p style={{ borderBottom: "1px solid lightblue", display: "inline" }}>
+            save
+          </p>
+        );
       case "linkedin":
         return <LinkedInIcon />;
       case "email":

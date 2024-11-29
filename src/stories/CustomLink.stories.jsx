@@ -1,3 +1,4 @@
+import React from "react";
 import CustomLink from "../components/CustomLink/CustomLink";
 
 export default {

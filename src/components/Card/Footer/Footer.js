@@ -1,11 +1,9 @@
-import {FooterContainer} from "./FooterStyles";
+import React from "react";
+import { FooterContainer } from "./FooterStyles";
 
-const Footer = ({children}) => {
-    return (
-        <FooterContainer>
-            {children}
-        </FooterContainer>
-    )
-}
+const Footer = ({ children }) => {
+  return <FooterContainer>{children}</FooterContainer>;
+};
 
 export default Footer;
+
