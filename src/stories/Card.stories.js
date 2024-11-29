@@ -3,7 +3,7 @@ import { Card } from "../components/Card";
 
 //👇 This default export determines where your story goes in the story list
 export default {
-  title: "MY-Card",
+  title: "Example/MY-Card",
   component: Card,
 };
 
